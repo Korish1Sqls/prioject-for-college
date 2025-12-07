@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>сайт</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <style>
+        /* Анимации для плавных переходов */
+        .page-transition {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-in-out;
+        }
+        
+        .page-loaded .page-transition {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-delay-1 { transition-delay: 0.1s; }
+        .section-delay-2 { transition-delay: 0.2s; }
+        .section-delay-3 { transition-delay: 0.3s; }
+        .section-delay-4 { transition-delay: 0.4s; }
+        
+        /* Плавная прокрутка */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Анимация для кнопки */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .cta-button {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Анимация появления элементов при скролле */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* АДАПТИВНОСТЬ ДЛЯ ТЕЛЕФОНОВ */
+        @media (max-width: 768px) {
+            /* Шапка фиксированная - НЕ МЕНЯЕМ ЕЕ РАЗМЕР */
+            header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                /* Высота как в оригинале */
+            }
+            
+            .header-content {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 15px;
+                position: relative;
+                /* Высота как в оригинале */
+            }
+            
+            /* Portfolio - позиционируем */
+            .logo {
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                margin: 0;
+                padding: 0;
+            }
+            
+            .logo h1 {
+                font-size: 1.2em; /* Немного меньше */
+                margin: 0;
+                padding: 0;
+                white-space: nowrap;
+                line-height: 1;
+                position: relative;
+                top: 3px;
+                left: -5px;
+            }
+            
+            /* Скрываем обычное меню */
+            nav:not(.mobile-nav) {
+                display: none;
+            }
+            
+            /* Кнопка три полоски */
+            .hamburger-btn {
+                display: block !important;
+                background: none;
+                border: none;
+                font-size: 1.5em;
+                cursor: pointer;
+                padding: 5px;
+                color: inherit;
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                margin: 0;
+                z-index: 1001;
+            }
+            
+            /* Мобильное меню */
+            .mobile-nav {
+                display: none;
+                position: fixed;
+                top: 60px; /* Под шапкой */
+                left: 0;
+                right: 0;
+                background: #f5f5f5;
+                padding: 10px 20px;
+                z-index: 999;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+            
+            .mobile-nav.active {
+                display: block;
+            }
+            
+            .mobile-nav ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                gap: 10px;
+            }
+            
+            .mobile-nav li {
+                margin-bottom: 8px;
+            }
+            
+            .mobile-nav a {
+                display: block;
+                padding: 10px 12px;
+                text-align: center;
+                text-decoration: none;
+                color: #000000;
+                font-size: 1em;
+                font-weight: 500;
+                border-radius: 4px;
+                transition: background-color 0.2s;
+            }
+            
+            .mobile-nav a:active {
+                background-color: #e0e0e0;
+            }
+            
+            /* Отступ для контента под шапкой */
+            main {
+                margin-top: 80px; /* Больше отступ чтобы не перекрывало */
+            }
+            
+            /* ВСЕМ ЭЛЕМЕНТАМ САЙТА ДЕЛАЕМ МЕНЬШЕ КРОМЕ ШАПКИ */
+            
+            /* Основной текст меньше */
+            body {
+                font-size: 14px;
+            }
+            
+            /* Заголовки меньше */
+            .hero h1 {
+                font-size: 1.5em !important;
+                margin-bottom: 10px !important;
+            }
+            
+            .hero p {
+                font-size: 0.9em !important;
+                margin-bottom: 15px !important;
+            }
+            
+            h2 {
+                font-size: 1.3em !important;
+            }
+            
+            h3 {
+                font-size: 1.1em !important;
+            }
+            
+            p {
+                font-size: 0.9em !important;
+                line-height: 1.4 !important;
+            }
+            
+            /* Отступы в секциях меньше */
+            section {
+                padding: 15px !important;
+                margin-bottom: 20px !important;
+            }
+            
+            .hero {
+                padding: 20px 15px !important;
+            }
+            
+            .about-content {
+                gap: 20px !important;
+                padding: 15px !important;
+            }
+            
+            .services, .features {
+                padding: 20px 15px !important;
+            }
+            
+            /* Кнопка меньше */
+            .cta-button {
+                padding: 8px 20px !important;
+                font-size: 0.9em !important;
+            }
+            
+            /* Карточки преимуществ меньше */
+            .feature-card {
+                padding: 15px !important;
+                margin-bottom: 10px !important;
+            }
+            
+            .feature-card h3 {
+                font-size: 1.1em !important;
+                margin-bottom: 8px !important;
+            }
+            
+            .feature-card p {
+                font-size: 0.9em !important;
+            }
+            
+            /* Футер меньше */
+            footer {
+                padding: 20px !important;
+                font-size: 0.9em !important;
+            }
+            
+            .footer-content p {
+                margin-bottom: 8px !important;
+            }
+            
+            /* Изображение адаптивное */
+            .about-image img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+        
+        /* Маленькие телефоны */
+        @media (max-width: 480px) {
+            /* Шапка не меняем */
+            
+            .logo h1 {
+                font-size: 1.1em;
+                top: 2px;
+                left: -8px;
+            }
+            
+            .hamburger-btn {
+                font-size: 1.3em;
+                right: 10px;
+            }
+            
+            .mobile-nav {
+                top: 60px;
+                padding: 8px 15px;
+            }
+            
+            .mobile-nav li {
+                margin-bottom: 6px;
+            }
+            
+            .mobile-nav a {
+                padding: 8px 10px;
+                font-size: 0.95em;
+            }
+            
+            main {
+                margin-top: 80px;
+            }
+            
+            /* Еще меньше весь сайт кроме шапки */
+            body {
+                font-size: 13px;
+            }
+            
+            .hero h1 {
+                font-size: 1.4em !important;
+            }
+            
+            .hero p {
+                font-size: 0.85em !important;
+            }
+            
+            h2 {
+                font-size: 1.2em !important;
+            }
+            
+            section {
+                padding: 12px !important;
+            }
+            
+            .cta-button {
+                padding: 7px 18px !important;
+                font-size: 0.85em !important;
+            }
+            
+            .feature-card {
+                padding: 12px !important;
+            }
+        }
+        
+        /* Очень маленькие телефоны */
+        @media (max-width: 320px) {
+            .logo {
+                left: 10px;
+            }
+            
+            .logo h1 {
+                font-size: 1em;
+                top: 1px;
+                left: -10px;
+            }
+            
+            .hamburger-btn {
+                font-size: 1.1em;
+                padding: 3px;
+                right: 8px;
+            }
+            
+            .mobile-nav {
+                top: 60px;
+                padding: 6px 10px;
+            }
+            
+            .mobile-nav li {
+                margin-bottom: 4px;
+            }
+            
+            .mobile-nav a {
+                padding: 6px 8px;
+                font-size: 0.9em;
+            }
+            
+            main {
+                margin-top: 80px;
+            }
+            
+            /* Минимальные размеры */
+            body {
+                font-size: 12px;
+            }
+            
+            .hero h1 {
+                font-size: 1.3em !important;
+            }
+            
+            .cta-button {
+                padding: 6px 15px !important;
+                font-size: 0.8em !important;
+            }
+        }
+        
+        /* На компьютерах все как было */
+        @media (min-width: 769px) {
+            .logo {
+                position: static;
+                left: auto;
+                top: auto;
+                transform: none;
+            }
+            
+            .logo h1 {
+                position: static;
+                top: auto;
+                left: auto;
+                font-size: inherit; /* Как в оригинале */
+            }
+            
+            .hamburger-btn {
+                display: none !important;
+            }
+            
+            .mobile-nav {
+                display: none !important;
+            }
+            
+            nav:not(.mobile-nav) {
+                display: block;
+            }
+            
+            header {
+                position: static;
+            }
+            
+            main {
+                margin-top: 0;
+            }
+            
+            /* Возвращаем оригинальные размеры */
+            body {
+                font-size: inherit;
+            }
+            
+            .hero h1, h2, h3, p, .cta-button {
+                font-size: inherit !important;
+            }
+            
+            section, .hero, .about-content, .services, .features, footer {
+                padding: inherit !important;
+                margin-bottom: inherit !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-transition">
+        <div class="header-content">
+            <div class="logo">
+                <h1>PortFolio</h1>
+            </div>
+            
+            <!-- Оригинальное меню -->
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="nav-link">Главная</a></li>
+                    <li><a href="pages/about.html" class="nav-link">О нас</a></li>
+                    <li><a href="pages/my_projeckt.html" class="nav-link">Мои работы</a></li>
+                    <li><a href="pages/contacts.html" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Кнопка гамбургер меню -->
+            <button class="hamburger-btn" id="hamburgerBtn" style="display: none;">☰</button>
+            
+            <!-- Мобильное меню -->
+            <nav class="mobile-nav" id="mobileNav">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Главная</a></li>
+                    <li><a href="pages/about.html" class="nav-link">О нас</a></li>
+                    <li><a href="pages/my_projeckt.html" class="nav-link">Мои работы</a></li>
+                    <li><a href="pages/contacts.html" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero page-transition section-delay-1">
+            <h1>Добро пожаловать на мой сайт!</h1>
+            <p>Это мой сайт, созданный по заданию. Мы специализируемся на создании качественных веб-решений.</p>
+            <a href="#about-project" class="cta-button">Подробнее</a>
+        </section>
+
+        <!-- About Project Section -->
+        <section class="about-project fade-in" id="about-project">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>О проекте</h2>
+                    <p>Этот сайт представляет собой портфолио веб-разработчика. Мы создаем современные и функциональные веб-решения с использованием последних технологий.</p>
+                    <p>Наша команда имеет многолетний опыт в разработке сайтов различной сложности - от лендингов до крупных интернет-магазинов. Каждый проект мы делаем с душой и вниманием к деталям.</p>
+                    <p>Мы используем современные подходы к разработке, что позволяет создавать быстрые, безопасные и удобные сайты.</p>
+                </div>
+                <div class="about-image">
+                    <img src="img/one_big_turtle.png" alt="О нашем проекте">
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция услуг -->
+        <section class="services fade-in">
+            <h2>Наши услуги</h2>
+            <div class="services-content">
+                <p>Мы предлагаем полный цикл разработки веб-сайтов - от дизайна до запуска и поддержки.</p>
+                <p>Наша команда готова реализовать проекты любой сложности с использованием современных технологий.</p>
+            </div>
+        </section>
+
+        <!-- Секция преимуществ -->
+        <section class="features fade-in">
+            <h2>Наши преимущества</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Качество</h3>
+                    <p>Мы делаем качественные проекты</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Скорость</h3>
+                    <p>Быстрая разработка</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Надежность</h3>
+                    <p>Надежные решения</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="page-transition section-delay-4">
+        <div class="footer-content">
+            <p>Телефон: +7 (123) 456-78-90</p>
+            <p>Email: info@mysite.ru</p>
+            <p>&copy; 2025 Мой сайт. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.body.classList.add('page-loaded');
+            }, 100);
+            
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNav = document.getElementById('mobileNav');
+            
+            if (hamburgerBtn && mobileNav) {
+                function updateMenuButton() {
+                    if (window.innerWidth <= 768) {
+                        hamburgerBtn.style.display = 'block';
+                    } else {
+                        hamburgerBtn.style.display = 'none';
+                        mobileNav.classList.remove('active');
+                    }
+                }
+                
+                updateMenuButton();
+                window.addEventListener('resize', updateMenuButton);
+                
+                hamburgerBtn.addEventListener('click', function() {
+                    mobileNav.classList.toggle('active');
+                });
+                
+                document.querySelectorAll('.mobile-nav .nav-link').forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileNav.classList.remove('active');
+                    });
+                });
+                
+                document.addEventListener('click', function(event) {
+                    if (mobileNav.classList.contains('active')) {
+                        if (!hamburgerBtn.contains(event.target) && !mobileNav.contains(event.target)) {
+                            mobileNav.classList.remove('active');
+                        }
+                    }
+                });
+            }
+            
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        if (mobileNav && mobileNav.classList.contains('active')) {
+                            mobileNav.classList.remove('active');
+                        }
+                        return;
+                    }
+                    
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    document.body.style.opacity = '0';
+                    document.body.style.transition = 'opacity 0.3s ease-in-out';
+                    
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 300);
+                });
+            });
+            
+            const ctaButton = document.querySelector('.cta-button');
+            if (ctaButton) {
+                ctaButton.addEventListener('mouseenter', function() {
+                    this.style.animation = 'none';
+                });
+                
+                ctaButton.addEventListener('mouseleave', function() {
+                    this.style.animation = 'pulse 2s infinite';
+                });
+            }
+        });
+        
+        window.addEventListener('beforeunload', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.3s ease-in-out';
+        });
+    </script>
+</body>
+</html>
